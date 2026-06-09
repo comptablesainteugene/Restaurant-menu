@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Capitole - Saint-Eugène Hôtel ★★★★</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:#f4f4f4;
+}
+
+header{
+background:#111;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+header h1{
+font-size:40px;
+letter-spacing:2px;
+}
+
+header h2{
+color:#d4af37;
+margin-top:10px;
+}
+
+.search-box{
+max-width:800px;
+margin:30px auto;
+padding:0 20px;
+}
+
+input{
+width:100%;
+padding:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+.categories{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:10px;
+margin:20px;
+}
+
+.categories button{
+padding:12px 20px;
+border:none;
+background:#111;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+.categories button:hover{
+background:#d4af37;
+}
+
+.container{
+max-width:1300px;
+margin:auto;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.card-content{
+padding:20px;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.price{
+color:#d4af37;
+font-size:22px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.desc{
+color:#555;
+line-height:1.5;
+}
+
+.whatsapp{
+display:block;
+margin-top:15px;
+text-align:center;
+background:#25D366;
+color:white;
+padding:12px;
+text-decoration:none;
+border-radius:5px;
+font-weight:bold;
+}
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>SAINT-EUGÈNE HOTEL ★★★★</h1>
+<h2>LE CAPITOLE</h2>
+<p>Carte du Restaurant</p>
+</header>
+
+<div class="search-box">
+<input type="text" id="search" placeholder="Rechercher un plat...">
+</div>
+
+<div class="categories">
+<button onclick="filterMenu('all')">Tous</button>
+<button onclick="filterMenu('salade')">Salades</button>
+<button onclick="filterMenu('entree')">Entrées</button>
+<button onclick="filterMenu('pates')">Pâtes</button>
+<button onclick="filterMenu('viande')">Viandes</button>
+<button onclick="filterMenu('poisson')">Poissons</button>
+<button onclick="filterMenu('dessert')">Desserts</button>
+</div>
+
+<div class="container" id="menuContainer"></div>
+
+<footer>
+Le Capitole Restaurant | Saint-Eugène Hôtel ★★★★
+</footer>
+
+<script>
+
+const menu = [
+
+{
+name:"Salade César",
+price:"2 200 DA",
+category:"salade",
+image:"https://images.unsplash.com/photo-1546793665-c74683f339c1",
+description:"Salade verte, tomate, œuf, filet de poulet pané, croûtons, câpres, parmesan et sauce César."
+},
+
+{
+name:"Salade Niçoise",
+price:"2 100 DA",
+category:"salade",
+image:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd",
+description:"Salade verte, tomate, œuf, riz, poivron, haricots verts, thon, anchois et olives noires."
+},
+
+{
+name:"Salade Capitole",
+price:"2 000 DA",
+category:"salade",
+image:"https://images.unsplash.com/photo-1490645935967-10de6ba17061",
+description:"Salade verte, tomate, œuf, poivron, oignon, concombre, mortadelle et fromage."
+},
+
+{
+name:"Soupe du Jour",
+price:"1 100 DA",
+category:"entree",
+image:"https://images.unsplash.com/photo-1547592180-85f173990554",
+description:"Suggestion du chef selon les produits du jour."
+},
+
+{
+name:"Œuf Mimosa et Crudités",
+price:"900 DA",
+category:"entree",
+image:"https://images.unsplash.com/photo-1482049016688-2d3e1b311543",
+description:"Œuf mimosa accompagné de crudités fraîches."
+},
+
+{
+name:"Brik au Thon",
+price:"900 DA",
+category:"entree",
+image:"images/image.avif",
+description:"Brik croustillante garnie au thon."
+},
+
+{
+name:"Assiette Mixte",
+price:"2 000 DA",
+category:"entree",
+image:"https://images.unsplash.com/photo-1544025162-d76694265947",
+description:"Charcuteries et fromages."
+},
+
+{
+name:"Tagliatelles à la Carbonara",
+price:"1 600 DA",
+category:"pates",
+image:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9",
+description:"Tagliatelles à la carbonara."
+},
+
+{
+name:"Tagliatelles au Saumon",
+price:"2 200 DA",
+category:"pates",
+image:"https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+description:"Tagliatelles au saumon."
+},
+
+{
+name:"Spaghettis aux Crevettes",
+price:"2 800 DA",
+category:"pates",
+image:"https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9",
+description:"Spaghettis aux crevettes."
+},
+
+{
+name:"Filet de Bœuf",
+price:"3 800 DA",
+category:"viande",
+image:"https://images.unsplash.com/photo-1558030006-450675393462",
+description:"Sauce au poivre ou Roquefort."
+},
+
+{
+name:"Entrecôte Grillée",
+price:"3 200 DA",
+category:"viande",
+image:"https://images.unsplash.com/photo-1544025162-d76694265947",
+description:"Sauce au poivre ou Roquefort."
+},
+
+{
+name:"Suprême de Volaille",
+price:"6 900 DA",
+category:"viande",
+image:"https://images.unsplash.com/photo-1600891964092-4316c288032e",
+description:"Sauce Normande."
+},
+
+{
+name:"Crevettes Sautées",
+price:"3 800 DA",
+category:"poisson",
+image:"images/crevette-sauttees-legumes.avif",
+description:"À l'ail ou sauce Provençale."
+},
+
+{
+name:"Darne de Daurade à la Provençale",
+price:"2 900 DA",
+category:"poisson",
+image:"images/1771978405-daurade-provencale-recette-simple-et-savoureuse-1024x590.jpg",
+description:"Daurade à la Provençale."
+},
+
+{
+name:"Pavé de Saumon à l'Oseille",
+price:"4 200 DA",
+category:"poisson",
+image:"https://images.unsplash.com/photo-1467003909585-2f8a72700288",
+description:"Pavé de saumon à l'oseille."
+},
+
+{
+name:"Darne de Loup de Mer",
+price:"2 900 DA",
+category:"poisson",
+image:"https://images.unsplash.com/photo-1559847844-d721426d6edc",
+description:"Sauce aux champignons."
+},
+
+{
+name:"Crème Brûlée",
+price:"1 400 DA",
+category:"dessert",
+image:"https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc",
+description:"Dessert traditionnel."
+},
+
+{
+name:"Mousse au Chocolat",
+price:"1 400 DA",
+category:"dessert",
+image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587",
+description:"Mousse légère au chocolat."
+},
+
+{
+name:"Tiramisu Saint-Eugène",
+price:"1 500 DA",
+category:"dessert",
+image:"https://images.unsplash.com/photo-1571877227200-a0d98ea607e9",
+description:"Recette signature du restaurant."
+},
+
+{
+name:"Assiette de Fruits Frais",
+price:"1 300 DA",
+category:"dessert",
+image:"https://images.unsplash.com/photo-1619566636858-adf3ef46400b",
+description:"Fruits frais de saison."
+}
+
+];
+
+function displayMenu(items){
+
+const container=document.getElementById('menuContainer');
+container.innerHTML='';
+
+items.forEach(item=>{
+
+container.innerHTML+=`
+<div class="card">
+
+<img src="${item.image}?auto=format&fit=crop&w=800&q=80">
+
+<div class="card-content">
+
+<h3>${item.name}</h3>
+
+<div class="price">${item.price}</div>
+
+<p class="desc">${item.description}</p>
+
+<a class="whatsapp"
+href="https://wa.me/213770059543?text=Bonjour%20je%20souhaite%20commander%20${encodeURIComponent(item.name)}"
+target="_blank">
+
+Commander
+
+</a>
+
+</div>
+
+</div>
+`;
+
+});
+
+}
+
+function filterMenu(category){
+
+if(category==="all"){
+displayMenu(menu);
+return;
+}
+
+displayMenu(
+menu.filter(item=>item.category===category)
+);
+
+}
+
+document.getElementById('search').addEventListener('keyup',function(){
+
+const value=this.value.toLowerCase();
+
+displayMenu(
+menu.filter(item=>
+item.name.toLowerCase().includes(value)
+)
+);
+
+});
+
+displayMenu(menu);
+
+</script>
+
+</body>
+</html>
